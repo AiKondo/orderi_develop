@@ -1,15 +1,19 @@
 // 型のために導入
-import { NextPage } from 'next'
+import { GetStaticProps, NextPage, NextPageContext } from 'next'
 // Next.jsの組み込みのコンポーネント
 import Head from 'next/head'
 
-// ページコンポーネントのpropsの型定義(ここでは空)
-type SSGProps = {}
+// ページコンポーネントのpropsの型定義
+type SSGProps = {
+    message: string
+}
 
 // SSG向けのページを実装
 // NextPageはNext.jsのPage向けの型
 // NextPage<props>でpropsが入るPageであることを明示
-const SSG: NextPage<SSGProps> = () => {
+// NextPage<SSGProps>はmessage: stringのみを受け取って生成されるページの型
+const SSG: NextPage<SSGProps> = (props) => {
+    const { message } = props
     return(
         <div>
             {/* Headコンポーネントで包むと、その要素は<head>タグに配置されます　*/}
@@ -24,6 +28,20 @@ const SSG: NextPage<SSGProps> = () => {
             </main>
         </div>
     )
+}
+
+// getStaticPropsはビルドに実行される
+// GetStaticProps<SSGprops>はSSGPropsを引数にとるgetStaticPropsの型
+export const getStaticProps: GetStaticProps<SSGProps> = async (context) =>{
+    const timestamp = new Date().toLocaleString()
+    const message = `${timestamp}にgetStaticPropsが実行されました`
+    console.log(message)
+    return{
+        //ここで返したpropsを元にページコンポーネントを描画する
+        props: {
+            message,
+        },
+    }
 }
 
 //ページコンポーネントはexport defaultでエクスポートする
