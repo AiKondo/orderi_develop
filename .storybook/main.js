@@ -15,7 +15,7 @@ module.exports = {
   staticDirs: ['public'],
   babel: async options => ({
     ...options,
-    pligins:[
+    plugins:[
       '@babel/plugin-proposal-class-properties',
       '@babel/plugin-proposal-private-methods',
       '@babel/plugin-proposal-private-property-in-object',
